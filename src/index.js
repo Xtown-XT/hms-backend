@@ -29,7 +29,7 @@ app.get('/api/error', (req, res) => {
 });
 
 //routes
-app.use('/api/v1/hms', userRoutes);
+app.use('/api/v1', userRoutes);
 
 
 
