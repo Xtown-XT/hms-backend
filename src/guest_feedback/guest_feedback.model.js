@@ -6,10 +6,10 @@ import Room from "../frontoffice/model/room.model.js";
 const GuestFeedback = sequelize.define(
   "GuestFeedback",
   {
-    feedback_id: {
+    id: {
       type: DataTypes.UUID,
-      primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
       allowNull: false,
     },
     guest_id: {
@@ -17,7 +17,7 @@ const GuestFeedback = sequelize.define(
       allowNull: false,
       references: {
         model: Guest,
-        key: "id", 
+        key: "id",
       },
     },
     room_id: {
@@ -25,31 +25,43 @@ const GuestFeedback = sequelize.define(
       allowNull: false,
       references: {
         model: Room,
-        key: "id", 
+        key: "id",
       },
     },
-    waiter_rating: {
-      type: DataTypes.TINYINT,
+    rating: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      validate: { min: 1, max: 5 },
+      validate: {
+        min: 1,
+        max: 5,
+      },
     },
-    housekeeping_rating: {
-      type: DataTypes.TINYINT,
-      allowNull: false,
-      validate: { min: 1, max: 5 },
+    service_rating: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        min: 1,
+        max: 5,
+      },
     },
-    chef_rating: {
-      type: DataTypes.TINYINT,
-      allowNull: false,
-      validate: { min: 1, max: 5 },
+    cleanliness_rating: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        min: 1,
+        max: 5,
+      },
     },
-    hotel_rating: {
-      type: DataTypes.TINYINT,
-      allowNull: false,
-      validate: { min: 1, max: 5 },
+    food_rating: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        min: 1,
+        max: 5,
+      },
     },
-    feedback: {
-      type: DataTypes.STRING(255),
+    comments: {
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     feedback_type: {
@@ -60,39 +72,30 @@ const GuestFeedback = sequelize.define(
       type: DataTypes.ENUM("Pending", "Reviewed", "Resolved", "Ignored"),
       defaultValue: "Pending",
     },
-    guest_email: {
-      type: DataTypes.STRING(255),
+    category: {
+      type: DataTypes.ENUM("service", "food", "room", "general"),
       allowNull: true,
     },
-    stay_duration: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
+    is_active: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
     },
-    resolved_by: {
+    created_by: {
       type: DataTypes.UUID,
-      allowNull: true,
+      allowNull: true
     },
-    resolved_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
+    updated_by: {
+      type: DataTypes.UUID,
+      allowNull: true
     },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      allowNull: false,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      allowNull: false,
-    },
+
   },
   {
     tableName: "guest_feedback",
     timestamps: true,
-    paranoid: true,  
-    createdAt: "created_at",
-    updatedAt: "updated_at",
+    paranoid: true,
+
   }
 );
 

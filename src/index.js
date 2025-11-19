@@ -9,7 +9,7 @@ import orderRoutes from './order/routes/index.js';
 import qrRoutes from './qr/routes/qr.routes.js';
 import profileRoutes from './profile/routes/profile.routes.js';
 import otpRoutes from "./otp/otp.routes.js";
-import diningRoutes from './dining/routes/dining.routes.js';
+import diningRoutes from './dining/routes/index.js';
 import digitalmenuRoutes from './digital_menu/routes/index.js';
 import frontofficeRoutes from './frontoffice/routes/index.js';
 import GuestFeedbackRoutes from './guest_feedback/index.js'; 

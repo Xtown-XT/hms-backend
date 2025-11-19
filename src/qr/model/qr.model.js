@@ -13,26 +13,26 @@ const QRCode = sequelize.define("QRCode", {
     allowNull: false,
   },
   qrCodeUrl: {
-    type: DataTypes.TEXT("long"),   
+    type: DataTypes.TEXT("long"),
     allowNull: false,
   },
   is_active: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true
-},
+  },
   created_by: {
     type: DataTypes.UUID,
     allowNull: true,
-},
-updated_by: {
+  },
+  updated_by: {
     type: DataTypes.UUID,
     allowNull: true,
-},
-deleted_by: {
+  },
+  deleted_by: {
     type: DataTypes.UUID,
     allowNull: true,
-},
+  },
 }, {
   tableName: "qrcodes",
   timestamps: true,

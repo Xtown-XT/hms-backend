@@ -118,6 +118,10 @@ const Order = sequelize.define(
       type: DataTypes.ENUM("Unpaid", "Paid", "Failed"),
       defaultValue: "Unpaid",
     },
+    is_active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
     created_by: {
       type: DataTypes.UUID,
       allowNull: true,
@@ -126,18 +130,12 @@ const Order = sequelize.define(
       type: DataTypes.UUID,
       allowNull: true,
     },
-    deleted_by: {
-      type: DataTypes.UUID,
-      allowNull: true,
-    },
   },
   {
     tableName: "orders",
     timestamps: true,
     paranoid: true, // Enables soft delete
-    createdAt: "created_at",
-    updatedAt: "updated_at",
-    deletedAt: "deleted_at",
+  
   }
 );
 

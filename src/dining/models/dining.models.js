@@ -25,39 +25,10 @@ const DiningTable = sequelize.define('DiningTable', {
     type: DataTypes.UUID,
     allowNull: true,
   },
-  deleted_by: {
-    type: DataTypes.UUID,
-    allowNull: true,
-  },
-  created_by_name: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  updated_by_name: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  deleted_by_name: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  created_by_email: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  updated_by_email: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  deleted_by_email: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-
-
 }, {
   tableName: 'dining_tables',
   timestamps: true,
+  paranoid: true
 });
 
 

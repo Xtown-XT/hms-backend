@@ -57,34 +57,24 @@ const RoomDelivery = sequelize.define(
       defaultValue: false,
       allowNull: false,
     },
-    is_active: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
-      allowNull: false,
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      allowNull: false,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      allowNull: false,
-      onUpdate: DataTypes.NOW,
-    },
-    deleted_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
+     is_active: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
+  },
+  created_by: {
+    type: DataTypes.UUID,
+    allowNull: true,
+  },
+  updated_by: {
+    type: DataTypes.UUID,
+    allowNull: true,
+  },
   },
   {
     tableName: "room_delivery",
     timestamps: true,  // Enable timestamps
-    createdAt: "created_at",  // Map createdAt to created_at
-    updatedAt: "updated_at",  // Map updatedAt to updated_at
     paranoid: true,  // Enable soft deletes
-    deletedAt: "deleted_at",  // Map deletedAt to deleted_at
+   
   }
 );
 
