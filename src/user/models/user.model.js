@@ -1,42 +1,5 @@
-// import { DataTypes } from "sequelize";
-// import sequelize from "../../config/database.js";
-
-// const User = sequelize.define("User", {
-//   id: {
-//     type: DataTypes.UUID,
-//     defaultValue: DataTypes.UUIDV4,
-//     primaryKey: true,
-//   },
-//   username: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-//   email: {
-//     type: DataTypes.STRING,
-//     unique: true,
-//     allowNull: false,
-//     validate: { isEmail: true },
-//   },
-//   password: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-//   role: {
-//     type: DataTypes.ENUM("user", "admin"),
-//     defaultValue: "user",
-//   },
-// }, {
-//   tableName: "endusers",
-//   timestamps: true,
-// });
-
-// export default User;
-
-
-// models/user.model.js
 import { sequelize } from '../../db/index.js';
 import { DataTypes } from 'sequelize';
-
 
 const User = sequelize.define("User", {
   id: {
@@ -44,9 +7,10 @@ const User = sequelize.define("User", {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
-  role_id: {
-    type: DataTypes.UUID,
+  role: {
+    type: DataTypes.ENUM("user", "admin", "superadmin","staff"),
     allowNull: false,
+
   },
   username: {
     type: DataTypes.STRING(50),

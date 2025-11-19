@@ -1,23 +1,8 @@
-// import { sequelize } from "../src/db/index.js";
-// import User from "../src/user/models/user.model.js";
-// import Role from "../src/user/models/role.model.js";
-
-// async function syncDatabase() {
-//   try {
-//     await sequelize.sync({ alter: true });
-//     console.log("Database synchronized successfully");
-//   } catch (err) {
-//     console.error("Error syncing database:", err.message);
-//     throw err
-//   }
-// }
-
-// syncDatabase().then((data) => console.log("synced")).catch((err)=> console.error("error"));
-
 
 import { sequelize } from "../src/db/index.js";
-import User from "../src/user/models/user.model.js";
-import Role from "../src/user/models/role.model.js";
+import * as userModel from "../src/user/models/user.model.js";
+import * as roleModel from "../src/user/models/role.model.js";
+
 
 async function syncDatabase() {
   try {

@@ -1,26 +1,21 @@
 import { Router } from "express";
 import userController from "../controller/user.controller.js";
-// (optionally) import authMiddleware to protect routes
+import { verifyToken, authorizeRole } from "../../middleware/index.js";
 
 const router = Router();
 
-router.post("/", userController.createUser);
-router.get("/", userController.getUsers);
-router.get("/:id", userController.getUserById);
+// Public routes
+router.post("/user/register", userController.createUser);
+router.post("/user/login", userController.loginUser);
 
-router.get("/me/profile", userController.getMe);
-router.post("/login", userController.loginUser);
 
-router.put("/:id", userController.updateUserById);
-router.delete("/:id", userController.softDeleteUser);
-router.patch("/:id/restore", userController.restoreUser);
+// Protected routes 
+router.get("/user", verifyToken, authorizeRole(["admin"]), userController.getAllUsers);
+router.get("/user/:id", verifyToken, authorizeRole(["admin"]), userController.getUserById);
+router.get("/users/me", verifyToken, authorizeRole(["admin", "user"]), userController.getCurrentUser);
 
-router.post("/refresh-token", userController.refreshAccessToken);
-router.post("/logout", userController.logoutUser);
-
-router.post("/send-otp", userController.sendOtpToken);
-router.get("/exists", userController.userAlreadyExists);
-
-router.post("/change-password", userController.changePassword);
+router.put("/user/:id", verifyToken, authorizeRole(["admin"]), userController.updateUserById);
+router.delete("/user/:id", verifyToken, authorizeRole(["admin"]), userController.softDeleteUser);
+router.patch("/user/:id/restore", verifyToken, authorizeRole(["admin"]), userController.restoreUser);
 
 export default router;

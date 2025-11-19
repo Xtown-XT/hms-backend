@@ -41,6 +41,7 @@
     "nodemailer": "^7.0.3",
     "prisma": "^6.9.0",
     "puppeteer": "^24.14.0",
+    "qrcode": "^1.5.4",
     "razorpay": "^2.9.6",
     "sequelize": "^6.37.7",
     "twilio": "^5.7.1",

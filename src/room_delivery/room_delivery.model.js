@@ -1,0 +1,96 @@
+import { sequelize } from "../db/index.js";
+import { DataTypes } from "sequelize";
+import Room from "../frontoffice/model/room.model.js";
+import Guest from "../frontoffice/model/guest.model.js";
+import Order from "../order/models/order.models.js";
+
+const RoomDelivery = sequelize.define(
+  "RoomDelivery",
+  {
+    delivery_id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4,
+    },
+    order_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: Order,
+        key: "id",
+      },
+      onDelete: "CASCADE",
+    },
+    room_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: Room,
+        key: "id",
+      },
+      onDelete: "CASCADE",
+    },
+    guest_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: Guest,
+        key: "id",
+      },
+      onDelete: "CASCADE",
+    },
+    status: {
+      type: DataTypes.ENUM(
+        "PENDING",
+        "READY",
+        "CHECKED",
+        "OUT_FOR_DELIVERY",
+        "DELIVERED",
+        "CANCELLED"
+      ),
+      defaultValue: "PENDING",
+      allowNull: false,
+    },
+    item_check: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
+    },
+    is_active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false,
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+      onUpdate: DataTypes.NOW,
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+  },
+  {
+    tableName: "room_delivery",
+    timestamps: true,  // Enable timestamps
+    createdAt: "created_at",  // Map createdAt to created_at
+    updatedAt: "updated_at",  // Map updatedAt to updated_at
+    paranoid: true,  // Enable soft deletes
+    deletedAt: "deleted_at",  // Map deletedAt to deleted_at
+  }
+);
+
+// Associations
+RoomDelivery.belongsTo(Room, { foreignKey: "room_id", onDelete: "CASCADE" });
+RoomDelivery.belongsTo(Guest, { foreignKey: "guest_id", onDelete: "CASCADE" });
+RoomDelivery.belongsTo(Order, { foreignKey: "order_id", onDelete: "CASCADE" });
+
+export default RoomDelivery;

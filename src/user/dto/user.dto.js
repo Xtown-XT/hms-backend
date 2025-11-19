@@ -6,7 +6,7 @@ export const registerSchema = {
     email: z.string().email(),
     password: z.string().min(6).max(255),
     phone: z.string().regex(/^\d{10}$/),
-    role_id: z.string(),
+    role: z.string(),
   }),
 };
 
@@ -31,7 +31,7 @@ export const updateUserSchema = {
     username: z.string().min(3).max(50).optional(),
     email: z.string().email().optional(),
     phone: z.string().regex(/^\d{10}$/).optional(),
-    role_id: z.string().min(3).max(20).optional(),
+    role: z.string().min(3).max(20).optional(),
   }),
 };
 

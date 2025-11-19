@@ -1,53 +1,58 @@
-import responseHelper from './responseHelper.js';
-import express from 'express';
-import qs from 'qs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import morgan from 'morgan';
-import cors from 'cors';
-import jsonErrorHandler from './errorHandler.js';
+// export const authorizeRole = (roles = []) => {
+//   return async (req, res, next) => {
+//     // await LoggerUtil.log({
+//     //   level: 'INFO',
+//     //   service: 'AuthService',
+//     //   module: 'RoleMiddleware',
+//     //   message: 'Checking role authorization',
+//     //   details: { required_roles: roles, user_role: req.user?.role?.role_name },
+//     //   request_id: req.id,
+//     // });
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const publicPath = path.join(__dirname, "..", "public");
+//     if (!req.user || !roles.includes(req.user.role.role_name)) {
+//       // await LoggerUtil.log({
+//       //   level: 'ERROR',
+//       //   service: 'AuthService',
+//       //   module: 'RoleMiddleware',
+//       //   message: 'Insufficient permissions',
+//       //   details: { required_roles: roles, user_role: req.user?.role?.role_name },
+//       //   request_id: req.id,
+//       // });
+//       return res.status(403).json({ message: 'Forbidden: Insufficient permissions' });
+//     }
 
-function registerMiddleware(app) {
-  // Use qs for advanced query parsing
-  app.set("query parser", str => qs.parse(str));
+//     // await LoggerUtil.log({
+//     //   level: 'INFO',
+//     //   service: 'AuthService',
+//     //   module: 'RoleMiddleware',
+//     //   message: 'Role authorization successful',
+//     //   details: { user_role: req.user.role.role_name },
+//     //   request_id: req.id,
+//     // });
 
-  // Built-in JSON & URL-encoded parser
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+//     next();
+//   };
+// };
 
-  // CORS
-  app.use(cors({
-    origin: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-    credentials: true,
-  }));
 
-  // Logger
-  app.use(morgan("dev"));
 
-  // Static files
-  app.use("/public", express.static(publicPath));
+// middlewares/authorizeRole.js
 
-  //  Serve uploads folder
-  const uploadsPath = path.join(process.cwd(), "uploads");
-  console.log("📂 Serving uploads from:", uploadsPath); // debug log
-  app.use("/uploads", express.static(uploadsPath));
+export const authorizeRole = (allowedRoles = []) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json({ message: "Forbidden: No user info in token" });
+    }
 
-  // Custom response helper
-  app.use(responseHelper);
-}
+    // Normalize case to avoid mismatch (e.g., "Admin" vs "admin")
+    const userRole = req.user.role?.toLowerCase();
+    const roles = allowedRoles.map((r) => r.toLowerCase());
 
-function registerMiddlewareAtLast(app) {
-  app.use(jsonErrorHandler);
+    if (!userRole || !roles.includes(userRole)) {
+      return res.status(403).json({ message: "Forbidden: Insufficient permissions" });
+    }
 
-  app.use((req, res) => {
-    res.sendError("Route not found", 404);
-  });
-}
+    next();
+  };
+};
 
-export { registerMiddleware, registerMiddlewareAtLast };

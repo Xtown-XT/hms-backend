@@ -12,7 +12,7 @@
 
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize("demo", "ramya", "ramya", {
+const sequelize = new Sequelize("hms_demo", "rakshaya", "rakshaya", {
   host: "192.168.1.150",
   port: 3306,
   dialect: "mysql",
