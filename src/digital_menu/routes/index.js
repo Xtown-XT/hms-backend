@@ -7,11 +7,11 @@ import multiMealItemRoutes from './multi_meal_item.routes.js';
 
 const router = express.Router();
 
-router.use('/digital_menu', cuisineRoutes);
-router.use('/digital_menu', mealTypeRoutes);
-router.use('/digital_menu', multiCourseMealRoutes);
-router.use('/digital_menu', mealItemRoutes);
-router.use('/digital_menu', multiMealItemRoutes);
+router.use('/digitalmenu', cuisineRoutes);
+router.use('/digitalmenu', mealTypeRoutes);
+router.use('/digitalmenu', multiCourseMealRoutes);
+router.use('/digitalmenu', mealItemRoutes);
+router.use('/digitalmenu', multiMealItemRoutes);
 
 
 

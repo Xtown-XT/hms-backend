@@ -1,54 +1,64 @@
 // src/modules/room/room.routes.js
+
 import { Router } from "express";
-import RoomController from "../controller/room.controller.js";
+
+import {
+  createRoom,
+  getAllRooms,
+  getRoomById,
+  updateRoom,
+  deleteRoom,
+  restoreRoom
+} from "../controller/room.controller.js";
+
 import { verifyToken, authorizeRole } from "../../middleware/index.js";
 
 const router = Router();
 
-// Admin-only routes
+// -----------------------------------------------------
+// Admin Routes
+// -----------------------------------------------------
 
 router.get(
   "/rooms",
   verifyToken,
   authorizeRole(["admin"]),
-  RoomController.getAllRooms
+  getAllRooms
 );
 
 router.get(
   "/room/:id",
   verifyToken,
   authorizeRole(["admin"]),
-  RoomController.getRoomById
+  getRoomById
 );
 
 router.post(
   "/createroom",
   verifyToken,
   authorizeRole(["admin"]),
-  RoomController.createRoom
+  createRoom
 );
 
 router.put(
   "/room/:id",
   verifyToken,
   authorizeRole(["admin"]),
-  RoomController.updateRoom
+  updateRoom
 );
 
 router.delete(
-  "/deleteroom/:id",
+  "/room/:id",
   verifyToken,
   authorizeRole(["admin"]),
-  RoomController.deleteRoom
+  deleteRoom
 );
 
-router.patch(
-  "/room/restore/:id",
+router.put(
+  "/restoreroom/:id",
   verifyToken,
   authorizeRole(["admin"]),
-  RoomController.restoreRoom
+  restoreRoom
 );
-
-
 
 export default router;

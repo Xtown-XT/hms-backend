@@ -28,7 +28,7 @@ function getLocalIP() {
 app.listen(port, host, async () => {
   try {
     // Ensure DB tables/models are all in place
-    await sequelize.sync();
+    await sequelize.sync( );
     // await sequelize.sync({ force: true })
     console.log(`Server is running on http://${host}:${port}`);
   } catch (err) {

@@ -15,22 +15,22 @@ const MealItem = sequelize.define('MealItem', {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: Cuisine, 
+            model: Cuisine,
             key: 'id',
         },
-        onDelete: 'CASCADE', 
+        onDelete: 'CASCADE',
     },
     meal_type_id: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-            model: MealType, 
+            model: MealType,
             key: 'id',
         },
-        onDelete: 'CASCADE', 
+        onDelete: 'CASCADE',
     },
     course_type: {
-        type: DataTypes.ENUM('veg', 'non-veg'), 
+        type: DataTypes.ENUM('veg', 'non-veg'),
         allowNull: false,
     },
     description: {
@@ -38,30 +38,32 @@ const MealItem = sequelize.define('MealItem', {
         allowNull: true,
     },
     duration: {
-        type: DataTypes.INTEGER, 
-        allowNull: false,
+        type: DataTypes.INTEGER,
+        allowNull: true,
     },
     price: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
+        type: DataTypes.INTEGER,
+        allowNull: true,
+       
     },
+
     image: {
-        type: DataTypes.TEXT, 
+        type: DataTypes.TEXT,
         allowNull: true,
     }
 }, {
     tableName: 'meal_items',
-    timestamps: true, 
-    paranoid: true,  
+    timestamps: true,
+    paranoid: true,
 });
 
 MealItem.belongsTo(Cuisine, {
-    foreignKey: 'cuisine_id', 
+    foreignKey: 'cuisine_id',
     as: 'cuisine',
 });
 
 MealItem.belongsTo(MealType, {
-    foreignKey: 'meal_type_id', 
+    foreignKey: 'meal_type_id',
     as: 'meal_type',
 });
 
