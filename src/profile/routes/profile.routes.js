@@ -9,7 +9,7 @@ const router = express.Router();
 
 // ------------------ CREATE PROFILE ------------------
 router.post(
-  "/profile",
+  "/createprofile",
   verifyToken,
   authorizeRole(["admin"]),
   uploadProfile.single("profile_image"), // Multer for profile image
@@ -19,7 +19,7 @@ router.post(
 
 // ------------------ GET ALL PROFILES ------------------
 router.get(
-  "/profile",
+  "/getallprofile",
   verifyToken,
   authorizeRole(["admin"]),
   ProfileController.getAll
@@ -35,7 +35,7 @@ router.get(
 
 // ------------------ UPDATE PROFILE ------------------
 router.put(
-  "/profile/:profile_id",
+  "/updateprofile/:profile_id",
   verifyToken,
   authorizeRole(["admin"]),
   uploadProfile.single("profile_image"), // Multer for profile image
@@ -45,7 +45,7 @@ router.put(
 
 // ------------------ DELETE PROFILE ------------------
 router.delete(
-  "/profile/:profile_id",
+  "/deleteprofile/:profile_id",
   verifyToken,
   authorizeRole(["admin"]),
   ProfileController.remove

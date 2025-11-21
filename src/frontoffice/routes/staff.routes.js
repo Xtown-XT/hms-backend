@@ -7,11 +7,11 @@ import { verifyToken, authorizeRole } from "../../middleware/index.js";
 const router = Router();
 
 // ---------------------- ADMIN-ONLY ROUTES ----------------------
-router.get("/staff", verifyToken, authorizeRole(["admin"]), StaffController.getAllStaff);
+router.get("/getallstaff", verifyToken, authorizeRole(["admin"]), StaffController.getAllStaff);
 router.get("/staff/:id", verifyToken, authorizeRole(["admin"]), StaffController.getStaffById);
-router.post("/staff", verifyToken, authorizeRole(["admin"]), StaffController.createStaff);
-router.put("/staff/:id", verifyToken, authorizeRole(["admin"]), StaffController.updateStaff);
-router.delete("/staff/:id", verifyToken, authorizeRole(["admin"]), StaffController.deleteStaff);
+router.post("/createstaff", verifyToken, authorizeRole(["admin"]), StaffController.createStaff);
+router.put("/updatestaff/:id", verifyToken, authorizeRole(["admin"]), StaffController.updateStaff);
+router.delete("/deletestaff/:id", verifyToken, authorizeRole(["admin"]), StaffController.deleteStaff);
 router.patch("/staff/restore/:id", verifyToken, authorizeRole(["admin"]), StaffController.restoreStaff);
 
 export default router;

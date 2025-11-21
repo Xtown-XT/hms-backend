@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyToken, authorizeRole, validate } from "../../middleware/index.js";
-import { uploadCategory } from "../../middleware/upload.js";
+import {uploadCategoryImage } from "../../middleware/upload.js";
 import {
   createCategory,
   updateCategory,
@@ -8,32 +8,51 @@ import {
   getCategoryById,
   softDeleteCategory,
   restoreCategory,
-} from "../controller/category.controller .js";
+} from "../controller/category.controller .js"; // fixed import path
 import { categorySchema, updateCategorySchema } from "../dto/category.dto.js";
 
 const router = express.Router();
 
+// CREATE CATEGORY
 router.post(
   "/createcategory",
   verifyToken,
   authorizeRole(["admin"]),
-  uploadCategory.single("image"),
+ uploadCategoryImage.single("image"),
   validate({ body: categorySchema }),
   createCategory
 );
 
+// UPDATE CATEGORY
 router.put(
-  "/category/:id",
+  "/updatecategory/:id",
   verifyToken,
   authorizeRole(["admin"]),
-  uploadCategory.single("image"),
+  uploadCategoryImage.single("image"),
   validate({ body: updateCategorySchema }),
   updateCategory
 );
 
+// GET ALL CATEGORIES
 router.get("/category", getAllCategories);
+
+// GET CATEGORY BY ID
 router.get("/category/:id", getCategoryById);
-router.delete("/category/:id", verifyToken, authorizeRole(["admin"]), softDeleteCategory);
-router.patch("/category/:id/restore", verifyToken, authorizeRole(["admin"]), restoreCategory);
+
+// SOFT DELETE CATEGORY
+router.delete(
+  "/category/:id",
+  verifyToken,
+  authorizeRole(["admin"]),
+  softDeleteCategory
+);
+
+// RESTORE CATEGORY
+router.patch(
+  "/categories/:id/restore",
+  verifyToken,
+  authorizeRole(["admin"]),
+  restoreCategory
+);
 
 export default router;

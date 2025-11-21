@@ -3,18 +3,35 @@ import path from "path";
 import fs from "fs";
 
 // ------------------ Category Upload ------------------
-const categoryUploadDir = "uploads/category";
-if (!fs.existsSync(categoryUploadDir)) fs.mkdirSync(categoryUploadDir, { recursive: true });
+// const categoryUploadDir = "uploads/category";
+// if (!fs.existsSync(categoryUploadDir)) fs.mkdirSync(categoryUploadDir, { recursive: true });
 
-const categoryStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, categoryUploadDir),
+// const categoryStorage = multer.diskStorage({
+//   destination: (req, file, cb) => cb(null, categoryUploadDir),
+//   filename: (req, file, cb) => {
+//     const ext = path.extname(file.originalname).toLowerCase();
+//     const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+//     cb(null, unique);
+//   },
+// });
+
+const uploadFolder = path.join("uploads", "category");
+if (!fs.existsSync(uploadFolder)) fs.mkdirSync(uploadFolder, { recursive: true });
+
+const storage = multer.diskStorage({
+  // destination: (req, file, cb) => cb(null, uploadFolder),
+  // filename: (req, file, cb) => {
+  //   const uniqueName = Date.now() + "_" + file.originalname.replace(/\s+/g, "_");
+  //   cb(null, uniqueName);
+  // },
+
+   destination: (req, file, cb) => cb(null, uploadFolder),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
     const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
     cb(null, unique);
   },
 });
-
 // ------------------ Profile Upload ------------------
 const profileUploadDir = "uploads/profile";
 if (!fs.existsSync(profileUploadDir)) fs.mkdirSync(profileUploadDir, { recursive: true });
@@ -54,7 +71,8 @@ const fileFilter = (req, file, cb) => {
 };
 
 // ------------------ Exports ------------------
-export const uploadCategory = multer({ storage: categoryStorage, fileFilter });
+// export const uploadCategory = multer({ storage: categoryStorage, fileFilter });
+export const uploadCategoryImage = multer({ storage });
 export const uploadProfile = multer({ storage: profileStorage, fileFilter });
 export const uploadMealItem = multer({ storage: mealStorage, fileFilter });
 

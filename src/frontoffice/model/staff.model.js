@@ -30,7 +30,7 @@ const Staff = sequelize.define(
     role: {
       type: DataTypes.ENUM("admin", "staff", "manager"),
       allowNull: false,
-      defaultValue: "staff",
+      // defaultValue: "staff",
     },
     is_active: {
       type: DataTypes.BOOLEAN,

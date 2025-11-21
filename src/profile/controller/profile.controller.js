@@ -13,10 +13,17 @@ const formatImageUrl = (req, filename, folder = "profile") => {
   return `${req.protocol}://${req.get("host")}/uploads/${folder}/${filename}`;
 };
 
-// ------------------ ADMIN CHECK ------------------
+// Helper to delete old image file
+// const deleteImageFile = (filename, folder = "profile") => {
+//   if (!filename) return;
+//   const filePath = path.join("uploads", folder, filename);
+//   if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+// };
+
+// ADMIN VALIDATION
 const requireAdmin = (req, res) => {
   if (!req.user || req.user.role !== "admin") {
-    res.status(403).json({ status: "error", message: "Access denied: Admins only" });
+    res.status(403).json({ success: false, message: "Access denied: Admins only" });
     return false;
   }
   return true;
@@ -24,6 +31,29 @@ const requireAdmin = (req, res) => {
 
 // ------------------ CREATE PROFILE ------------------
 export const create = async (req, res) => {
+  // if (!requireAdmin(req, res)) return;
+
+  // try {
+  //   const payload = {
+  //     ...req.body,
+  //     profile_image: req.file ? req.file.filename : null,
+  //     created_by: req.user.id,
+  //     created_by_name: req.user.name,
+  //     created_by_email: req.user.email,
+  //   };
+
+  //   const profile = await createProfileService(payload);
+
+  //   // Attach full image URL
+  //   if (profile?.profile_image) {
+  //     profile.profile_image_url = formatImageUrl(req, profile.profile_image);
+  //   }
+
+  //   return res.sendSuccess(profile, "Profile created successfully", 201);
+  // } catch (error) {
+  //   console.error("Error creating profile:", error);
+  //   return res.sendError("Failed to create profile", 400, error);
+  // }
   if (!requireAdmin(req, res)) return;
 
   try {
@@ -36,16 +66,18 @@ export const create = async (req, res) => {
     };
 
     const profile = await createProfileService(payload);
+    const data = profile.toJSON();
 
-    // Attach full image URL
-    if (profile?.profile_image) {
-      profile.profile_image_url = formatImageUrl(req, profile.profile_image);
-    }
+    if (data.profile_image) data.profile_image = formatImageUrl(req, data.profile_image);
 
-    return res.sendSuccess(profile, "Profile created successfully", 201);
+    return res.status(201).json({
+      success: true,
+      message: "Profile created successfully",
+      data,
+    });
   } catch (error) {
-    console.error("Error creating profile:", error);
-    return res.sendError("Failed to create profile", 400, error);
+    console.error("Create Profile Error:", error);
+    return res.status(500).json({ success: false, message: "Failed to create profile" });
   }
 };
 
@@ -84,36 +116,93 @@ export const update = async (req, res) => {
 
 // ------------------ GET ALL PROFILES ------------------
 export const getAll = async (req, res) => {
-  if (!requireAdmin(req, res)) return;
+  // if (!requireAdmin(req, res)) return;
+
+  // try {
+  //   const { page, limit, order, is_active } = req.query;
+
+  //   const filters = {};
+  //   if (is_active !== undefined) filters.is_active = is_active;
+
+  //   const orderDirection =
+  //     ["ASC", "DESC"].includes(order?.toUpperCase()) ? order.toUpperCase() : "DESC";
+
+  //   const result = await getAllProfiles({
+  //     page: Number(page) || 1,
+  //     limit: Number(limit) || 10,
+  //     filters,
+  //     order: orderDirection,
+  //   });
+
+  //   // Add full image URL
+  //   result.data = result.data.map((profile) => ({
+  //     ...profile,
+  //     profile_image_url: profile.profile_image
+  //       ? formatImageUrl(req, profile.profile_image)
+  //       : null,
+  //   }));
+
+  //   return res.sendSuccess(result, "Profiles retrieved successfully");
+  // } catch (error) {
+  //   console.error("Error retrieving profiles:", error);
+  //   return res.sendError("Failed to retrieve profiles", 400, error);
+  // }
 
   try {
-    const { page, limit, order, is_active } = req.query;
+    const {
+      page = 1,
+      limit = 10,
+      company_name,
+      address,
+      is_active,
+      gst_number,
+      phone,
+      email,
+      order = "DESC",
+    } = req.query;
 
-    const filters = {};
-    if (is_active !== undefined) filters.is_active = is_active;
+    const filters = {
+      company_name,
+      address,
+      gst_number,
+      phone,
+      email,
+    };
 
-    const orderDirection =
-      ["ASC", "DESC"].includes(order?.toUpperCase()) ? order.toUpperCase() : "DESC";
+    if (is_active !== undefined) {
+      filters.is_active = is_active === "true" || is_active === true;
+    }
 
     const result = await getAllProfiles({
-      page: Number(page) || 1,
-      limit: Number(limit) || 10,
+      page: Number(page),
+      limit: Number(limit),
       filters,
-      order: orderDirection,
+      order,
     });
 
-    // Add full image URL
-    result.data = result.data.map((profile) => ({
-      ...profile,
-      profile_image_url: profile.profile_image
-        ? formatImageUrl(req, profile.profile_image)
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+    const formatted = result.profiles.map((profile) => ({
+      ...profile.toJSON(),
+      profile_image: profile.profile_image
+        ? `${baseUrl}/uploads/profile/${profile.profile_image}`
         : null,
     }));
 
-    return res.sendSuccess(result, "Profiles retrieved successfully");
+    return res.json({
+      success: true,
+      message: "Profiles retrieved successfully",
+      data: formatted,
+      pagination: {
+        total: result.total,
+        page: result.currentPage,
+        limit: Number(limit),
+        totalPages: result.pages,
+      },
+    });
   } catch (error) {
-    console.error("Error retrieving profiles:", error);
-    return res.sendError("Failed to retrieve profiles", 400, error);
+    console.error("Get Profiles Error:", error);
+    return res.status(500).json({ success: false, message: "Failed to retrieve profiles" });
   }
 };
 

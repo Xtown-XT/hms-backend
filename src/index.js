@@ -18,7 +18,7 @@ import RoomdeliveryRoutes from './room_delivery/index.js';
 import NotificationRoutes from './notification/index.js';
 import InventoryRoutes from './inventory/routes/index.js';
 
-
+import path from 'path';
 
 const app = express();
 
@@ -31,6 +31,8 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(responseHelper);
+
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.get('/', (req, res) => {
   res.send("Hello World!!").status(404);
