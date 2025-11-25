@@ -65,10 +65,10 @@ export const DiningTableController = {
     }
   },
 
-  async softDelete(req, res) {
+  async delete(req, res) {
     try {
       const { id } = req.params;
-      const table = await DiningTableService.softDelete(id, { deleted_by: req.user.id });
+      const table = await DiningTableService.delete(id, { deleted_by: req.user.id });
       if (!table) return res.status(404).json({ message: 'Dining table not found' });
       res.json({ message: 'Soft deleted successfully' });
     } catch (err) {

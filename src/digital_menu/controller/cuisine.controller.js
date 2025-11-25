@@ -97,11 +97,11 @@ export const updateCuisine = async (req, res) => {
 
 // ✅ Soft Delete Cuisine (Admin Only)
 export const deleteCuisine = async (req, res) => {
+
   try {
     const { id } = req.params;
-    const validatedDelete = deleteCuisineSchema.parse(req.body);
 
-    const cuisine = await cuisineService.delete(id, validatedDelete);
+    const cuisine = await cuisineService.delete(id);
 
     if (!cuisine) {
       return res.status(404).json({ message: "Cuisine not found" });

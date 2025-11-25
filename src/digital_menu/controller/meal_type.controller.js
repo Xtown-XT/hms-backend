@@ -98,9 +98,9 @@ export const updateMealType = async (req, res) => {
 export const deleteMealType = async (req, res) => {
   try {
     const { id } = req.params;
-    const validatedDelete = deleteMealTypeSchema.parse(req.body);
+    // const validatedDelete = deleteMealTypeSchema.parse(req.body);
 
-    const mealType = await mealTypeService.delete(id, validatedDelete);
+    const mealType = await mealTypeService.delete(id);
 
     if (!mealType) {
       return res.status(404).json({ message: "Meal Type not found" });

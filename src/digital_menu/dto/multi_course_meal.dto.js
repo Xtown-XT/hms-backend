@@ -1,22 +1,37 @@
-import { createMultiCourseMealSchema } from "../../dto/multiCourseMeal.validation.js";
-import { z } from "zod";
+import { z } from 'zod';
 
-// Example Express route for creating a MultiCourseMeal
-app.post("/multi-course-meal", async (req, res) => {
-  try {
-    const validatedData = createMultiCourseMealSchema.parse(req.body); // Validate request body
+// CREATE MultiCourseMeal
+export const createMultiCourseMealSchema = z.object({
+  body: z.object({
+    meal_name: z.string().min(1, "Meal name is required"),
+    description: z.string().optional(),
+    price: z.number().positive("Price must be positive"),
+    menu_item_id: z.string().uuid("menu_item_id must be a valid UUID"),
+    duration: z.number().positive("Duration must be positive"),
+    image: z.string().optional(), // store filename or path
+  }),
+});
 
-    // Proceed with creating the MultiCourseMeal (e.g., saving to the database)
-    const multiCourseMeal = await MultiCourseMeal.create(validatedData);
+// UPDATE MultiCourseMeal
+export const updateMultiCourseMealSchema = z.object({
+  body: z.object({
+    meal_name: z.string().optional(),
+    description: z.string().optional(),
+    price: z.number().positive().optional(),
+    menu_item_id: z.string().uuid().optional(),
+    duration: z.number().positive().optional(),
+    image: z.string().optional(),
+  }),
+});
 
-    return res.status(201).json({
-      message: "MultiCourseMeal created successfully",
-      data: multiCourseMeal,
-    });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ errors: error.errors });
-    }
-    return res.status(500).json({ error: error.message });
-  }
+// PATCH Restore can optionally have updates
+export const restoreMultiCourseMealSchema = z.object({
+  body: z.object({
+    meal_name: z.string().optional(),
+    description: z.string().optional(),
+    price: z.number().positive().optional(),
+    menu_item_id: z.string().uuid().optional(),
+    duration: z.number().positive().optional(),
+    image: z.string().optional(),
+  }).optional(),
 });

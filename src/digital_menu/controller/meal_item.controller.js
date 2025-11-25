@@ -89,52 +89,94 @@ export const getMealItemById = async (req, res) => {
 
 // ---------------- UPDATE --------------------
 export const updateMealItem = async (req, res) => {
+  // try {
+  //   const validatedData = updateMealItemSchema.parse(req.body);
+
+  //   if (req.file) {
+  //     validatedData.image = `uploads/meal/${req.file.filename}`;
+  //   }
+
+  //   const mealItem = await mealItemService.update(req.params.id, validatedData);
+
+  //   if (!mealItem) {
+  //     return res.status(404).json({ message: "Meal Item not found" });
+  //   }
+
+  //   return res.status(200).json({
+  //     message: "Meal Item updated successfully",
+  //     data: mealItem,
+  //   });
+  // } catch (error) {
+  //   if (error.name === "ZodError") {
+  //     return res.status(400).json({ errors: error.errors });
+  //   }
+  //   return res.status(400).json({ error: error.message });
+  // }
+
+ try {
+  const body = req.body ?? {};  // <-- FIX: prevents undefined error
+
+  const validatedData = updateMealItemSchema.parse(body);
+
+  if (req.file) {
+    validatedData.image = `uploads/meal/${req.file.filename}`;
+  }
+
+  const mealItem = await mealItemService.update(req.params.id, validatedData);
+
+  if (!mealItem) {
+    return res.status(404).json({ message: "Meal Item not found" });
+  }
+
+  return res.status(200).json({
+    message: "Meal Item updated successfully",
+    data: mealItem,
+  });
+} catch (error) {
+  if (error.name === "ZodError") {
+    return res.status(400).json({ errors: error.errors });
+  }
+  return res.status(400).json({ error: error.message });
+}
+
+};
+
+// ---------------- DELETE (SOFT) --------------------
+export const deleteMealItem = async (req, res) => {
+  // try {
+  //   const validatedDelete = deleteMealItemSchema.parse(req.body);
+
+  //   const mealItem = await mealItemService.delete(
+  //     req.params.id,
+  //     validatedDelete
+  //   );
+
+  //   if (!mealItem) {
+  //     return res.status(404).json({ message: "Meal Item not found" });
+  //   }
+
+  //   return res
+  //     .status(200)
+  //     .json({ message: "Meal Item soft-deleted successfully" });
+  // } catch (error) {
+  //   return res.status(500).json({ error: error.message });
+  // }
+  
   try {
-    const validatedData = updateMealItemSchema.parse(req.body);
-
-    if (req.file) {
-      validatedData.image = `uploads/meal/${req.file.filename}`;
-    }
-
-    const mealItem = await mealItemService.update(req.params.id, validatedData);
+    const mealItem = await mealItemService.delete(req.params.id);
 
     if (!mealItem) {
       return res.status(404).json({ message: "Meal Item not found" });
     }
 
     return res.status(200).json({
-      message: "Meal Item updated successfully",
-      data: mealItem,
+      message: "Meal Item soft-deleted successfully",
     });
-  } catch (error) {
-    if (error.name === "ZodError") {
-      return res.status(400).json({ errors: error.errors });
-    }
-    return res.status(400).json({ error: error.message });
-  }
-};
-
-// ---------------- DELETE (SOFT) --------------------
-export const deleteMealItem = async (req, res) => {
-  try {
-    const validatedDelete = deleteMealItemSchema.parse(req.body);
-
-    const mealItem = await mealItemService.delete(
-      req.params.id,
-      validatedDelete
-    );
-
-    if (!mealItem) {
-      return res.status(404).json({ message: "Meal Item not found" });
-    }
-
-    return res
-      .status(200)
-      .json({ message: "Meal Item soft-deleted successfully" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 };
+
 
 // ---------------- RESTORE --------------------
 export const restoreMealItem = async (req, res) => {

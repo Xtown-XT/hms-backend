@@ -39,7 +39,7 @@ router.get(
 
 /* ---------------------- UPDATE GUEST ---------------------- */
 router.put(
-  "/guests/:id",
+  "/updateguest/:id",
   verifyToken,
   authorizeRole(["admin"]),
   validate({ body: updateGuestSchema }),
@@ -48,28 +48,16 @@ router.put(
 
 /* ---------------------- SINGLE DELETE GUEST ---------------------- */
 router.delete(
-  "/guests/:id",
+  "/deleteguest/:id",
   verifyToken,
   authorizeRole(["admin"]),
-  validate({ body: deleteGuestSchema }), // optional body but valid
+  validate({ params: deleteGuestSchema.shape.params }), // validate params only
   GuestController.deleteGuest
 );
 
-/* ---------------------- BULK DELETE GUESTS ---------------------- */
-router.delete(
-  "/deleteguests",
-  verifyToken,
-  authorizeRole(["admin"]),
-  validate({ body: deleteGuestSchema }),
-  GuestController.deleteGuest
-);
 
-/* ---------------------- RESTORE GUEST ---------------------- */
-router.patch(
-  "/guests/restore/:id",
-  verifyToken,
-  authorizeRole(["admin"]),
-  GuestController.restoreGuest
-);
+
+
 
 export default router;
+

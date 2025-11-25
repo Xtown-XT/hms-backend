@@ -29,7 +29,7 @@ app.listen(port, host, async () => {
   try {
     // Ensure DB tables/models are all in place
     await sequelize.sync( );
-    // await sequelize.sync({ force: true })
+    // await sequelize.sync({ alter: true })
     console.log(`Server is running on http://${host}:${port}`);
   } catch (err) {
     console.error('Failed to start server:', err);

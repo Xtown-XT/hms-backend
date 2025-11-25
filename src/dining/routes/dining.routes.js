@@ -9,7 +9,7 @@ router.post('/createtable', verifyToken, authorizeRole(['admin']), DiningTableCo
 router.get('/getalltable', verifyToken, authorizeRole(['admin']), DiningTableController.findAll);
 router.get('/table/:id', verifyToken, authorizeRole(['admin']), DiningTableController.findById);
 router.put('/updatetable/:id', verifyToken, authorizeRole(['admin']), DiningTableController.update);
-router.delete('/deletetable/:id', verifyToken, authorizeRole(['admin']), DiningTableController.softDelete);
+router.delete('/deletetable/:id', verifyToken, authorizeRole(['admin']), DiningTableController.delete);
 router.patch('/dining-table/:id/restore', verifyToken, authorizeRole(['admin']), DiningTableController.restore);
 
 export default router;

@@ -50,6 +50,19 @@ const MealItem = sequelize.define('MealItem', {
     image: {
         type: DataTypes.TEXT,
         allowNull: true,
+    },
+    created_by: {
+        type: DataTypes.UUID,
+        allowNull: true,
+    },
+    updated_by: {
+        type: DataTypes.UUID,
+        allowNull: true,
+    },
+     is_active: { 
+        type: DataTypes.BOOLEAN,
+        defaultValue: true, 
+        allowNull: false,
     }
 }, {
     tableName: 'meal_items',

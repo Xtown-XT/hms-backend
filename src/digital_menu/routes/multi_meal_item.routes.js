@@ -7,7 +7,7 @@ const router = Router();
 
 // ✅ Create a new MultiMealItem
 router.post(
-  "/multimealitem",
+  "/createmultimealitem",
   verifyToken,
   authorizeRole(["admin"]),
   MultiMealItemController.createMultiMealItem
@@ -31,7 +31,7 @@ router.get(
 
 // ✅ Update a MultiMealItem
 router.put(
-  "/multimealitem/:id",
+  "/updatemultimealitem/:id",
   verifyToken,
   authorizeRole(["admin"]),
   MultiMealItemController.updateMultiMealItem
@@ -39,7 +39,7 @@ router.put(
 
 // ✅ Soft delete a MultiMealItem
 router.delete(
-  "/multimealitem/:id",
+  "/deletemultimealitem/:id",
   verifyToken,
   authorizeRole(["admin"]),
   MultiMealItemController.deleteMultiMealItem
