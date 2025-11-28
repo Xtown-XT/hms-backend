@@ -5,7 +5,7 @@ import { verifyToken, authorizeRole } from "../../middleware/index.js";
 const router = Router();
 
 router.post(
-  "/cart",
+  "/createcart",
   verifyToken,
   authorizeRole(["admin", "user"]),
   CartController.createCart
@@ -26,14 +26,14 @@ router.get(
 );
 
 router.put(
-  "/cart/:id",
+  "/updatecart/:id",
   verifyToken,
   authorizeRole(["admin"]),
   CartController.updateCart
 );
 
 router.delete(
-  "/cart/:id",
+  "/deletecart/:id",
   verifyToken,
   authorizeRole(["admin"]),
   CartController.deleteCart

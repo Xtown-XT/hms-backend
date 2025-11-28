@@ -27,7 +27,7 @@ router.post(
 );
 
 router.put(
-  "/feedback/:id",
+  "/updatefeedback/:id",
   verifyToken,
   authorizeRole(["admin", "user"]),
   GuestFeedbackController.updateFeedback

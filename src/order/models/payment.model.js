@@ -30,7 +30,7 @@ const Payments = sequelize.define("Payment", {
     defaultValue: "CASH"
   },
   status: {
-    type: DataTypes.ENUM( "SUCCESS", "FAILED"),
+    type: DataTypes.ENUM("SUCCESS", "FAILED"),
     allowNull: false,
     defaultValue: "SUCCESS"
 
@@ -67,7 +67,8 @@ const Payments = sequelize.define("Payment", {
   },
 }, {
   tableName: "payments",
-  timestamps: true
+  timestamps: true,
+  paranoid: true,
 });
 
 Payments.belongsTo(Order, { foreignKey: "id" });

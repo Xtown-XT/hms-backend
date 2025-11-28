@@ -1,22 +1,3 @@
-// import express from "express";
-// import {
-//   createOrderItemsBulkController,
-//   getAllOrderItemsController,
-//   getOrderItemByIdController,
-//   updateOrderItemController,
-//   deleteOrderItemController,
-// } from "../controller/order_items.controller.js";
-
-// const router = express.Router();
-
-// router.post("/order-item", createOrderItemsBulkController);
-// router.get("/order-item", getAllOrderItemsController);
-// router.get("/order-item/:id", getOrderItemByIdController);
-// router.put("/order-item/:id", updateOrderItemController);
-// router.delete("/order-item/:id", deleteOrderItemController);
-
-// export default router;
-
 
 import { Router } from "express";
 import OrderItemController from "../controller/order_items.controller.js";
@@ -26,7 +7,7 @@ const router = Router();
 
 // ✅ Create Order Item
 router.post(
-  "/order-item",
+  "/createorderitem",
   verifyToken,
   authorizeRole(["admin", "user"]),
   OrderItemController.createOrderItem
@@ -34,7 +15,7 @@ router.post(
 
 // ✅ Get All Order Items
 router.get(
-  "/order-items",
+  "/orderitems",
   verifyToken,
   authorizeRole(["admin", "staff", "user"]),
   OrderItemController.getAllOrderItems
@@ -42,7 +23,7 @@ router.get(
 
 // ✅ Get Order Item By ID
 router.get(
-  "/order-item/:id",
+  "/orderitem/:id",
   verifyToken,
   authorizeRole(["admin", "staff", "user"]),
   OrderItemController.getOrderItemById
@@ -50,7 +31,7 @@ router.get(
 
 // ✅ Update Order Item (Only Admin)
 router.put(
-  "/order-item/:id",
+  "/updateorderitem/:id",
   verifyToken,
   authorizeRole(["admin"]),
   OrderItemController.updateOrderItem
@@ -58,7 +39,7 @@ router.put(
 
 // ✅ Delete Order Item (Only Admin)
 router.delete(
-  "/order-item/:id",
+  "/deleteorderitem/:id",
   verifyToken,
   authorizeRole(["admin"]),
   OrderItemController.deleteOrderItem

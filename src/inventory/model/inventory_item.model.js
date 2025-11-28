@@ -63,6 +63,7 @@ const InventoryItem = sequelize.define(
   {
     tableName: "inventory_items",
     timestamps: true,
+    paranoid:true,
   }
 );
 

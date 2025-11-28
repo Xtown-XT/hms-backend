@@ -5,7 +5,7 @@ import { verifyToken, authorizeRole } from "../../middleware/index.js";
 const router = Router();
 
 // Use the correct route prefix (ensure it's consistent with what you expect)
-router.post('/bill/generate', BillController.generateBill);
+router.post('/createbill', BillController.generateBill);
 
 // Add other routes here
 router.get('/bill', verifyToken, authorizeRole(["admin"]), BillController.getAllBills);

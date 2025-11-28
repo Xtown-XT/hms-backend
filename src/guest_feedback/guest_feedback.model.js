@@ -16,7 +16,7 @@ const GuestFeedback = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: Guest,
+        model: "guests",
         key: "id",
       },
     },
@@ -24,56 +24,50 @@ const GuestFeedback = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: Room,
+        model: "room",
         key: "id",
       },
     },
-    rating: {
-      type: DataTypes.INTEGER,
+    check_in_date: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
-      validate: {
-        min: 1,
-        max: 5,
-      },
     },
-    service_rating: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        min: 1,
-        max: 5,
-      },
+    check_out_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
     },
-    cleanliness_rating: {
-      type: DataTypes.INTEGER,
+
+    // SERVICE QUALITY (ENUM FIELDS)
+
+    front_desk_assistance: {
+      type: DataTypes.ENUM("Excellent", "Good", "Average", "Poor"),
       allowNull: true,
-      validate: {
-        min: 1,
-        max: 5,
-      },
     },
-    food_rating: {
-      type: DataTypes.INTEGER,
+    housekeeping_service: {
+      type: DataTypes.ENUM("Excellent", "Good", "Average", "Poor"),
       allowNull: true,
-      validate: {
-        min: 1,
-        max: 5,
-      },
+    },
+    restaurant_dining_experience: {
+      type: DataTypes.ENUM("Excellent", "Good", "Average", "Poor"),
+      allowNull: true,
+    },
+
+    // ROOM & FACILITIES (ENUM FIELDS)
+
+    cleanliness: {
+      type: DataTypes.ENUM("Excellent", "Good", "Average", "Poor"),
+      allowNull: true,
+    },
+    amenities: {
+      type: DataTypes.ENUM("Excellent", "Good", "Average", "Poor"),
+      allowNull: true,
+    },
+    pool_fitness_center: {
+      type: DataTypes.ENUM("Excellent", "Good", "Average", "Poor"),
+      allowNull: true,
     },
     comments: {
       type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    feedback_type: {
-      type: DataTypes.ENUM("Complaint", "Suggestion", "Compliment", "General"),
-      defaultValue: "General",
-    },
-    status: {
-      type: DataTypes.ENUM("Pending", "Reviewed", "Resolved", "Ignored"),
-      defaultValue: "Pending",
-    },
-    category: {
-      type: DataTypes.ENUM("service", "food", "room", "general"),
       allowNull: true,
     },
     is_active: {

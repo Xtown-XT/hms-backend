@@ -1,26 +1,3 @@
-// import { z } from "zod";
-
-// // Create bulk order items
-// export const createOrderItemsBulkSchema = z.object({
-//   order_id: z.string().uuid({ message: "Invalid order ID" }),
-//   items: z.array(
-//     z.object({
-//       menu_item_id: z.string().uuid({ message: "Invalid menu item ID" }),
-//       quantity: z.number().int().min(1).optional(),
-//       status: z.enum(["pending", "preparing", "ready"]).optional(),
-//     })
-//   ),
-// });
-
-// // Update order item
-// export const updateOrderItemSchema = z.object({
-//   menu_item_id: z.string().uuid().optional(),
-//   quantity: z.number().int().min(1).optional(),
-//   status: z.enum(["pending", "preparing", "ready"]).optional(),
-// });
-
-
-
 
 import { z } from "zod";
 

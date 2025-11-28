@@ -1,72 +1,3 @@
-// import { sequelize } from '../../db/index.js';
-// import { DataTypes } from 'sequelize';
-
-// const Orders = sequelize.define(
-//   'orders',
-//   {
-//     id: {
-//       type: DataTypes.UUID,
-//       defaultValue: DataTypes.UUIDV4,
-//       primaryKey: true,
-//       allowNull: false,
-//     },
-//     order_code: {
-//       type: DataTypes.STRING(50),
-//       allowNull: false,
-//       unique: true,
-//     },
-//     order_type: {
-//       type: DataTypes.ENUM('dine-in', 'takeaway'),
-//       allowNull: false,
-//     },
-//     table_no: {
-//       type: DataTypes.INTEGER,
-//       allowNull: false,
-//     },
-//     status: {
-//       type: DataTypes.ENUM('pending', 'ready', 'served', 'completed'),
-//       defaultValue: 'pending',
-//       allowNull: false,
-//     },
-//     view: {
-//       type: DataTypes.BOOLEAN,
-//       allowNull: false,
-//       defaultValue: false,
-//     },
-//     view_time: {
-//       type: DataTypes.DATE,
-//       allowNull: true,
-//     },
-//     is_active: {
-//       type: DataTypes.BOOLEAN,
-//       allowNull: false,
-//       defaultValue: true,
-//     },
-//     createdBy: {
-//       type: DataTypes.UUID,
-//       allowNull: true,
-//       defaultValue: null,
-//     },
-//     updatedBy: {
-//       type: DataTypes.UUID,
-//       allowNull: true,
-//       defaultValue: null,
-//     },
-//   },
-//   {
-//     tableName: 'orders',
-//     timestamps: true,
-//     indexes: [
-//       {
-//         unique: true,
-//         fields: ['order_code'],
-//       },
-//     ],
-//   }
-// );
-
-// export default Orders;
-
 
 import { sequelize } from "../../db/index.js";
 import { DataTypes } from "sequelize";
@@ -85,7 +16,7 @@ const Order = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: Guest,
+        model: "guests",
         key: "id",
       },
       onDelete: "CASCADE",
@@ -94,7 +25,7 @@ const Order = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: Room,
+        model: "room",
         key: "id",
       },
       onDelete: "CASCADE",
@@ -135,7 +66,7 @@ const Order = sequelize.define(
     tableName: "orders",
     timestamps: true,
     paranoid: true, // Enables soft delete
-  
+
   }
 );
 
@@ -149,5 +80,6 @@ Order.belongsTo(Room, {
   foreignKey: "room_id",
   as: "room",
 });
+
 
 export default Order;

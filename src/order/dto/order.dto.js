@@ -1,44 +1,4 @@
 
-// import { z } from 'zod';
-
-// // Schema for a single order item
-// export const orderItemSchema = z.object({
-//   item_name: z.string().min(1, 'Item name is required'),
-//   quantity: z.number().int().positive('Quantity must be a positive integer').default(1),
-//   price: z.number().positive('Price must be a positive number'),
-//   is_active: z.boolean().optional(),
-// });
-
-// // Schema for creating a new order
-// export const createOrderSchema = z.object({
-//   order_code: z.string().min(1, 'Order code is required'),
-//   order_type: z.enum(['dine-in', 'takeaway']),
-//   table_no: z.number().int().positive('Table number must be positive'),
-//   status: z.enum(['pending', 'ready', 'served', 'completed']).optional(),
-//   view: z.boolean().optional(),
-//   view_time: z.date().optional(),
-//   is_active: z.boolean().optional(),
-//   createdBy: z.string().uuid().optional(),
-//   updatedBy: z.string().uuid().optional(),
-//   items: z.array(orderItemSchema).optional(),
-// });
-
-// // Schema for updating order status
-// export const updateOrderStatusSchema = z.object({
-//   status: z.enum(['pending', 'ready', 'served', 'completed']),
-// });
-
-// // Schema for adding an item to an existing order
-// export const addOrderItemSchema = orderItemSchema;
-
-
-
-
-
-
-
-
-
 import { z } from "zod";
 
 export const orderSchema = z.object({

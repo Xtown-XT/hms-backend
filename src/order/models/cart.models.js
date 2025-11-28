@@ -17,7 +17,7 @@ const Cart = sequelize.define(
             type: DataTypes.UUID,
             allowNull: false,
             references: {
-                model: Guest,
+                model: "guests",
                 key: "id",
             },
             onDelete: "CASCADE",
@@ -26,7 +26,7 @@ const Cart = sequelize.define(
             type: DataTypes.UUID,
             allowNull: false,
             references: {
-                model: Room,
+                model: "room",
                 key: "id",
             },
             onDelete: "CASCADE",
@@ -35,7 +35,7 @@ const Cart = sequelize.define(
             type: DataTypes.UUID,
             allowNull: false,
             references: {
-                model: MealItem,
+                model: "meal_items",
                 key: "id",
             },
             onDelete: "CASCADE",
@@ -63,25 +63,19 @@ const Cart = sequelize.define(
             type: DataTypes.BOOLEAN,
             defaultValue: true,
         },
-        created_at: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-        },
-        updated_at: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-            onUpdate: DataTypes.NOW,
-        },
-        deleted_at: {
-            type: DataTypes.DATE,
+        created_by: {
+            type: DataTypes.UUID,
             allowNull: true,
         },
+        updated_by: {
+            type: DataTypes.UUID,
+            allowNull: true,
+        },
+
     },
     {
         tableName: "cart",
         timestamps: true,
-        createdAt: "created_at",
-        updatedAt: "updated_at",
         paranoid: true,
     }
 );

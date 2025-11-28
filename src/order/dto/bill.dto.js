@@ -1,11 +1,3 @@
-// import { z } from 'zod';
-
-// export const createBillSchema = z.object({
-//   order_id: z.string().uuid(),
-// });
-
-
-
 import { z } from "zod";
 
 // Common UUID validator

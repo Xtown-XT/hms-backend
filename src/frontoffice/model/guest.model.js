@@ -68,9 +68,9 @@ const Guest = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "room",
+        model: "room", // must match Room.tableName
         key: "room_no",
-      }
+      },
     },
 
     room_type: {
@@ -123,7 +123,7 @@ const Guest = sequelize.define(
     },
   },
   {
-    tableName: "Guests",
+    tableName: "guests",
     timestamps: true,
     paranoid: true,
   }
@@ -134,6 +134,7 @@ Guest.belongsTo(Room, {
   foreignKey: "room_no",
   targetKey: "room_no",
   as: "roomDetails",
+  
 });
 
 export default Guest;

@@ -168,22 +168,58 @@ const guestService = new BaseService(Guest);
 const isAdmin = (req) => req.user && req.user.role === "admin";
 
 // CREATE
+// export const createGuest = async (req, res) => {
+//   try {
+//     if (!isAdmin(req))
+//       return res.status(403).json({ message: "Admins only." });
+
+//     const data = createGuestSchema.parse(req.body);
+
+//     const payload = {
+//       ...data,
+//       created_by: req.user?.id || null,
+//     };
+
+//     const guest = await guestService.create(payload);
+//     return res.status(201).json({ message: "Guest created", data: guest });
+//   } catch (error) {
+//     return res.status(400).json({ error: error.message });
+//   }
+// };
+
 export const createGuest = async (req, res) => {
   try {
-    if (!isAdmin(req))
+    if (!isAdmin(req)) {
       return res.status(403).json({ message: "Admins only." });
+    }
 
+    // Validate request body
     const data = createGuestSchema.parse(req.body);
 
+    // Check if room exists
+    if (data.room_no) {
+      const room = await Room.findOne({ where: { room_no: data.room_no } });
+      if (!room) {
+        return res.status(400).json({ message: `Room number ${data.room_no} does not exist.` });
+      }
+    }
+
+    // Add created_by field
     const payload = {
       ...data,
       created_by: req.user?.id || null,
     };
 
+    // Create guest
     const guest = await guestService.create(payload);
-    return res.status(201).json({ message: "Guest created", data: guest });
+
+    return res.status(201).json({ message: "Guest created successfully", data: guest });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    if (error instanceof ZodError) {
+      return res.status(422).json({ message: "Validation error", errors: error.errors });
+    }
+    console.error("Create Guest Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -294,3 +330,4 @@ export const deleteGuest = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+

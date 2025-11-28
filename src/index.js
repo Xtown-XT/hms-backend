@@ -17,6 +17,7 @@ import RoomserviceRoutes from './room_service/index.js';
 import RoomdeliveryRoutes from './room_delivery/index.js';
 import NotificationRoutes from './notification/index.js';
 import InventoryRoutes from './inventory/routes/index.js';
+import taxRoutes from './tax/routes/index.js'
 
 import path from 'path';
 
@@ -62,6 +63,7 @@ app.use('/api/v1',RoomserviceRoutes);
 app.use('/api/v1',RoomdeliveryRoutes);
 app.use('/api/v1',NotificationRoutes);
 app.use('/api/v1',InventoryRoutes);
+app.use('/api/v1', taxRoutes);
 
 app.use((req, res) => {
   return res.sendError('Route not found', 404);
