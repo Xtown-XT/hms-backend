@@ -3,6 +3,7 @@ import { DataTypes } from "sequelize";
 import Order from "../models/order.models.js";
 import MealItem from "../../digital_menu/model/meal_item.model.js";
 
+
 const OrderItem = sequelize.define(
   "OrderItem",
   {
@@ -69,16 +70,27 @@ const OrderItem = sequelize.define(
 
   }
 );
+Order.hasMany(OrderItem, {
+  foreignKey: "order_id",
+  as: "orderItems",
+});
 
-// OrderItem.belongsTo(Order, { foreignKey: "order_id" });
 OrderItem.belongsTo(Order, {
   foreignKey: "order_id",
   as: "order",
 });
-// OrderItem.belongsTo(MealItem, { foreignKey: "meal_item_id" });
+
+// MEAL ITEM → ORDER ITEMS (1 : N)
 MealItem.hasMany(OrderItem, {
   foreignKey: "meal_item_id",
-  as: "orderItems"
+  as: "orderItems",
 });
+
+OrderItem.belongsTo(MealItem, {
+  foreignKey: "meal_item_id",
+  as: "mealItem",
+});
+
+
 
 export default OrderItem;

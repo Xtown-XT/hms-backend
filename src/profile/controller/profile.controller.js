@@ -31,53 +31,38 @@ const requireAdmin = (req, res) => {
 
 // ------------------ CREATE PROFILE ------------------
 export const create = async (req, res) => {
-  // if (!requireAdmin(req, res)) return;
-
-  // try {
-  //   const payload = {
-  //     ...req.body,
-  //     profile_image: req.file ? req.file.filename : null,
-  //     created_by: req.user.id,
-  //     created_by_name: req.user.name,
-  //     created_by_email: req.user.email,
-  //   };
-
-  //   const profile = await createProfileService(payload);
-
-  //   // Attach full image URL
-  //   if (profile?.profile_image) {
-  //     profile.profile_image_url = formatImageUrl(req, profile.profile_image);
-  //   }
-
-  //   return res.sendSuccess(profile, "Profile created successfully", 201);
-  // } catch (error) {
-  //   console.error("Error creating profile:", error);
-  //   return res.sendError("Failed to create profile", 400, error);
-  // }
-  if (!requireAdmin(req, res)) return;
-
   try {
-    const payload = {
-      ...req.body,
-      profile_image: req.file ? req.file.filename : null,
-      created_by: req.user.id,
-      created_by_name: req.user.name,
-      created_by_email: req.user.email,
-    };
+    const payload = { ...req.body };
 
+    // Handle profile image (same style as category)
+    if (req.file) payload.profile_image = req.file.filename;
+
+    // Created by details
+    payload.created_by = req.user?.id ?? "system";
+    // payload.created_by_name = req.user?.name ?? null;
+    // payload.created_by_email = req.user?.email ?? null;
+
+    // Create profile
     const profile = await createProfileService(payload);
-    const data = profile.toJSON();
+    // const data = profile.toJSON();
 
-    if (data.profile_image) data.profile_image = formatImageUrl(req, data.profile_image);
+    // Format image URL for response
+    // if (data.profile_image) {
+    //   data.profile_image = formatImageUrl(req, data.profile_image);
+    // }
 
     return res.status(201).json({
       success: true,
       message: "Profile created successfully",
-      data,
+      profile,
     });
+
   } catch (error) {
     console.error("Create Profile Error:", error);
-    return res.status(500).json({ success: false, message: "Failed to create profile" });
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to create profile",
+    });
   }
 };
 

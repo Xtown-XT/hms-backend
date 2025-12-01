@@ -73,7 +73,7 @@ export const getAllCarts = async (req, res) => {
       where: filter,
       page,
       limit,
-      orderBy: req.query.orderBy || "created_at",
+      orderBy: req.query.orderBy || "createdAt",
       order: req.query.order || "desc",
     });
 

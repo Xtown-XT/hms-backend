@@ -13,28 +13,59 @@ const mealItemService = new BaseService(MealItem);
 
 // ---------------- CREATE --------------------
 export const createMealItem = async (req, res) => {
-  try {
-    const validatedData = createMealItemSchema.parse({...req.body,price: Number(req.body.price)});
+  // try {
+  //   const validatedData = createMealItemSchema.parse({...req.body,price: Number(req.body.price)});
 
-    if (req.file) {
-      validatedData.image = `uploads/meal/${req.file.filename}`;
+  //   if (req.file) {
+  //     validatedData.image = `uploads/meal/${req.file.filename}`;
+  //   }
+
+  //   const mealItem = await mealItemService.create(validatedData);
+
+  //   return res.status(201).json({
+  //     message: "Meal Item created successfully",
+  //     data: mealItem,
+  //   });
+
+  // } catch (error) {
+  //   if (error.name === "ZodError") {
+  //     return res.status(400).json({ errors: error.errors });
+  //   }
+  //   return res.status(400).json({ error: error.message });
+  // }
+   try {
+    const payload = { ...req.body };
+
+    // Convert price to number if needed
+    if (payload.price) {
+      payload.price = Number(payload.price);
     }
 
-    const mealItem = await mealItemService.create(validatedData);
+    // Handle image upload
+    if (req.file) {
+      payload.image = req.file.filename; // same style as category
+    }
+
+    // Add created_by just like category
+    payload.created_by = req.user?.id ?? "system";
+
+    // Create meal item
+    const mealItem = await mealItemService.create(payload);
 
     return res.status(201).json({
-      message: "Meal Item created successfully",
-      data: mealItem,
+      success: true,
+      message: "Meal Item created",
+      mealItem,
     });
 
   } catch (error) {
-    if (error.name === "ZodError") {
-      return res.status(400).json({ errors: error.errors });
-    }
-    return res.status(400).json({ error: error.message });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
-   
 };
+
 
 // ---------------- GET ALL -------------------
 export const getAllMealItems = async (req, res) => {
@@ -56,17 +87,84 @@ export const getAllMealItems = async (req, res) => {
       orderBy,
       order,
     });
+     const baseUrl = `${req.protocol}://${req.get("host")}`;
 
-    return res.status(200).json({
-      message: "Meal Items fetched successfully",
-      total: result.count,
-      page: Number(page),
-      totalPages: Math.ceil(result.count / limit),
-      data: result.rows,
+    // Format image URL like category
+    const formatted = result.rows.map((item) => ({
+      ...item.toJSON(),
+      image: item.image
+        ? `${baseUrl}/uploads/meal/${item.image}`
+        : null,
+    }));
+  
+
+  //   return res.status(200).json({
+  //     message: "Meal Items fetched successfully",
+  //     total: result.count,
+  //     data:formatted,
+  //     page: Number(page),
+  //     totalPages: Math.ceil(result.count / limit),
+  //     data: result.rows,
+  //   });
+  // } catch (error) {
+  //   return res.status(400).json({ error: error.message });
+  // }
+   return res.json({ 
+      success: true, 
+      data: formatted, 
+      pagination: { total: result.count, page: result.page, limit: result.limit, totalPages: result.totalPages } 
     });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(500).json({ success: false, message: error.message });
   }
+  //   try {
+  //   const {
+  //     search = "",
+  //     page = 1,
+  //     limit = 10,
+  //     includeInactive = false,
+  //     orderBy = "createdAt",
+  //     order = "DESC",
+  //   } = req.query;
+
+  //   const result = await mealItemService.getAll({
+  //     search,
+  //     page: Number(page),
+  //     limit: Number(limit),
+  //     includeInactive: includeInactive === "true",
+  //     orderBy,
+  //     order,
+  //     searchFields: ["item_name", "cuisine"], // same as category
+  //   });
+
+  //   // Build Base URL
+  //   const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+  //   // Format image URL like category
+  //   const formatted = result.rows.map((item) => ({
+  //     ...item.toJSON(),
+  //     image: item.image
+  //       ? `${baseUrl}/uploads/meal/${item.image}`
+  //       : null,
+  //   }));
+
+  //   return res.json({
+  //     success: true,
+  //     data: formatted,
+  //     pagination: {
+  //       total: result.count,
+  //       page: result.page,
+  //       limit: result.limit,
+  //       totalPages: result.totalPages,
+  //     },
+  //   });
+
+  // } catch (error) {
+  //   return res.status(500).json({
+  //     success: false,
+  //     message: error.message,
+  //   });
+  // }
 };
 
 // ---------------- GET BY ID -------------------

@@ -69,23 +69,43 @@ const Bills = sequelize.define(
 // Room.hasMany(Bills, { foreignKey: "room_id", as: "bills" });
 // Bills.belongsTo(Room, { foreignKey: "room_id", as: "room" });
 
-Orders.hasOne(Bills, {
-  foreignKey: "order_id",
-  as: "bill",
-});
-Bills.belongsTo(Orders, {
-  foreignKey: "order_id",
-  as: "order",
-});
+// Orders.hasOne(Bills, {
+//   foreignKey: "order_id",
+//   as: "bill",
+// });
+// Bills.belongsTo(Orders, {
+//   foreignKey: "order_id",
+//   as: "order",
+// });
 
-// ROOM → BILLS (1:N)
-Room.hasMany(Bills, {
-  foreignKey: "room_id",
-  as: "bills",
-});
-Bills.belongsTo(Room, {
-  foreignKey: "room_id",
-  as: "room",
-});
+// // ROOM → BILLS (1:N)
+// Room.hasMany(Bills, {
+//   foreignKey: "room_id",
+//   as: "bills",
+// });
+// Bills.belongsTo(Room, {
+//   foreignKey: "room_id",
+//   as: "room",
+// });
+ Orders.hasOne(Bills, {
+    foreignKey: "order_id",
+    as: "bill",
+  });
+
+  Bills.belongsTo(Orders, {
+    foreignKey: "order_id",
+    as: "order",
+  });
+
+  // ROOM → BILLS (1:N)
+  Room.hasMany(Bills, {
+    foreignKey: "room_id",
+    as: "bills",
+  });
+
+  Bills.belongsTo(Room, {
+    foreignKey: "room_id",
+    as: "room",
+  });
 
 export default Bills;

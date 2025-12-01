@@ -28,12 +28,28 @@ app.use(express.urlencoded({ limit: '5mb', extended: true }));
 
 app.use(express.urlencoded({ extended: true })); 
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+
+app.use(cors({
+  origin: process.env.NODE_ENV === "production"
+    ? ["http://localhost:5173/", "http://localhost:5174/"] // change later
+    : "*",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(responseHelper);
 
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+// app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
+app.use("/uploads", (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  next();
+}, express.static(path.join(process.cwd(), "uploads")));
 
 app.get('/', (req, res) => {
   res.send("Hello World!!").status(404);
