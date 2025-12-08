@@ -7,7 +7,7 @@ const isAdmin = (req) => req.user && req.user.role === "admin";
 // Generate full image URL
 const formatImageUrl = (req, filename, folder = "multi_course_meals") => {
   if (!filename) return null;
-  return `${req.protocol}://${req.get("host")}/uploads/${folder}/${filename}`;
+  return `${req.protocol}://${req.get("host")}/hms_uploads/${folder}/${filename}`;
 };
 
 // ------------------ CREATE ------------------

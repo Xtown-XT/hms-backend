@@ -15,7 +15,7 @@ import fs from "fs";
 //   },
 // });
 
-const uploadFolder = path.join("uploads", "category");
+const uploadFolder = path.join("hms_uploads", "category");
 if (!fs.existsSync(uploadFolder)) fs.mkdirSync(uploadFolder, { recursive: true });
 
 const storage = multer.diskStorage({
@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
   },
 });
 // ------------------ Profile Upload ------------------
-const profileUploadDir = "uploads/profile";
+const profileUploadDir = "hms_uploads/profile";
 if (!fs.existsSync(profileUploadDir)) fs.mkdirSync(profileUploadDir, { recursive: true });
 
 const profileStorage = multer.diskStorage({
@@ -45,7 +45,7 @@ const profileStorage = multer.diskStorage({
   },
 });
 // meal-item
-const mealUploadDir = "uploads/meal";
+const mealUploadDir = "hms_uploads/meal";
 
 if (!fs.existsSync(mealUploadDir)) {
   fs.mkdirSync(mealUploadDir, { recursive: true });
@@ -60,7 +60,7 @@ const mealStorage = multer.diskStorage({
   },
 });
 //multi course meal
-const multiCourseMealDir = "uploads/multi_course_meals";
+const multiCourseMealDir = "hms_uploads/multi_course_meals";
 
 if (!fs.existsSync(multiCourseMealDir)) {
   fs.mkdirSync(multiCourseMealDir, { recursive: true });

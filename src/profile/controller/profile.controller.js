@@ -10,7 +10,7 @@ import {
 // Generate full image URL
 const formatImageUrl = (req, filename, folder = "profile") => {
   if (!filename) return null;
-  return `${req.protocol}://${req.get("host")}/uploads/${folder}/${filename}`;
+  return `${req.protocol}://${req.get("host")}/hms_uploads/${folder}/${filename}`;
 };
 
 // Helper to delete old image file
@@ -170,7 +170,7 @@ export const getAll = async (req, res) => {
     const formatted = result.profiles.map((profile) => ({
       ...profile.toJSON(),
       profile_image: profile.profile_image
-        ? `${baseUrl}/uploads/profile/${profile.profile_image}`
+        ? `${baseUrl}/hms_uploads/profile/${profile.profile_image}`
         : null,
     }));
 

@@ -39,22 +39,36 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
+
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(responseHelper);
+// res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
 
 // app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
-app.use("/uploads", (req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  next();
-}, express.static(path.join(process.cwd(), "uploads")));
+// app.use("/uploads", (req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   next();
+// }, express.static(path.join(process.cwd(), "uploads")));
 
-app.get('/', (req, res) => {
-  res.send("Hello World!!").status(404);
-}
+// app.get('/', (req, res) => {
+//   res.send("Hello World!!").status(404);
+// }
+// );
+app.use(
+  "/hms_uploads",
+  (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin"); // ⭐ REQUIRED
+    next();
+  },
+  express.static(path.join(process.cwd(), "hms_uploads"))
 );
+// app.use("/hms_uploads", express.static("hms_uploads"));
+
 
 app.get('/api/data', (req, res) => {
   res.sendSuccess({ value: 42 }, 'Data fetched successfully');

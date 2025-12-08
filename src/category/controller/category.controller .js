@@ -8,7 +8,7 @@ const categoryService = new BaseService(Category);
 // Helper to generate full image URL
 const formatImageUrl = (req, filename, folder = "category") => {
   if (!filename) return null;
-  return `${req.protocol}://${req.get("host")}/uploads/${folder}/${filename}`;
+  return `${req.protocol}://${req.get("host")}/hms_uploads/${folder}/${filename}`;
 };
 
 
@@ -16,7 +16,7 @@ const formatImageUrl = (req, filename, folder = "category") => {
 // Helper to delete old image file
 const deleteImageFile = (filename, folder = "category") => {
   if (!filename) return;
-  const filePath = path.join("uploads", folder, filename);
+  const filePath = path.join("hms_uploads", folder, filename);
   if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 };
 
@@ -61,7 +61,7 @@ export const getAllCategories = async (req, res) => {
     const formatted = result.rows.map((cat) => ({
       ...cat.toJSON(),
       image: cat.image
-        ? `${baseUrl}/uploads/category/${cat.image}`
+        ? `${baseUrl}/hms_uploads/category/${cat.image}`
         : null,
     }));
 
